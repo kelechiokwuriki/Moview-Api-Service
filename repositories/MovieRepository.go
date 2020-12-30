@@ -6,8 +6,6 @@ import (
 	"log"
 
 	"cloud.google.com/go/firestore"
-	firebase "firebase.google.com/go"
-	"google.golang.org/api/option"
 )
 
 const projectId string = "moview-4862b"
@@ -16,7 +14,7 @@ const firestoreCollectionName string = "movies"
 type MovieRepository interface {
 	CreateMovie(movie *models.Movie) (*models.Movie, error)
 	GetAllMovies() ([]models.Movie, error)
-	UpdateMovie(id int, movie *models.Movie) (*models.Movie, error)
+	// UpdateMovie(id int, movie *models.Movie) (*models.Movie,)
 }
 
 type repo struct{}
@@ -53,12 +51,7 @@ func (*repo) CreateMovie(movie *models.Movie) (*models.Movie, error) {
 
 func (*repo) GetAllMovies() ([]models.Movie, error) {
 	ctx := context.Background()
-	// client, err := firestore.NewClient(ctx, projectId)
-
-	serviceAccount := option.WithCredentialsFile("/users/kelechiokwuriki/Downloads/moview-4862b-firebase-adminsdk-oqpck-8ed009f1d4.json")
-	app, err := firebase.NewApp(ctx, nil, serviceAccount)
-
-	client, err := app.Firestore(ctx)
+	client, err := firestore.NewClient(ctx, "moview-4862b")
 
 	if err != nil {
 		log.Fatalf("Failed to connect to firestore")
@@ -93,6 +86,4 @@ func (*repo) GetAllMovies() ([]models.Movie, error) {
 	return movies, nil
 }
 
-func UpdateMovie(id int, movie *models.Movie) (*models.Movie, error) {
-	return movie, err
-}
+// func UpdateMovie
