@@ -2,20 +2,19 @@ package controllers
 
 import (
 	"Moview/models"
-	"Moview/repositories"
+	"Moview/services"
 	"encoding/json"
-	"math/rand"
 	"net/http"
 )
 
 var (
-	movieRepository repositories.MovieRepository = repositories.NewMovieRepository()
+	movieService services.MovieService = services.NewMovieService()
 )
 
 func GetAllMovies(responseWriter http.ResponseWriter, request *http.Request) {
 	responseWriter.Header().Set("Content-type", "application/json")
 
-	movies, err := movieRepository.GetAllMovies()
+	movies, err := movieService.GetAllMovies()
 
 	if err != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
@@ -38,9 +37,14 @@ func CreateMovie(responseWriter http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	movie.ID = rand.Int63()
-	movieRepository.CreateMovie(&movie)
+	if validatedError := movieService.ValidateMovie(&movie); validatedError != nil {
+		responseWriter.WriteHeader(http.StatusInternalServerError)
+		responseWriter.Write([]byte(`{"error": "Error found when validating movie"}`))
+		return
+	}
+
+	createdMovie, err := movieService.CreateMovie(&movie)
 
 	responseWriter.WriteHeader(http.StatusOK)
-	json.NewEncoder(responseWriter).Encode(movie)
+	json.NewEncoder(responseWriter).Encode(createdMovie)
 }

@@ -9,9 +9,3 @@ type MovieRepository interface {
 	GetAllMovies() ([]models.Movie, error)
 	// UpdateMovie(id int, movie *models.Movie) (*models.Movie,)
 }
-
-// type movieRepo struct{}
-
-// func NewMovieRepository() MovieRepository {
-// 	return &movieRepo{}
-// }

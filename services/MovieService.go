@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	movieRepository repositories.MovieRepository = repositories.NewMovieRepository()
+	fireStoreRepository repositories.MovieRepository = repositories.NewFireStoreRepository()
 )
 
 type MovieService interface {
@@ -20,16 +20,18 @@ type MovieService interface {
 type movieService struct{}
 
 func NewMovieService() MovieService {
-	return &movieService
+	return &movieService{}
 }
 
 func (*movieService) GetAllMovies() ([]models.Movie, error) {
-
+	return fireStoreRepository.GetAllMovies()
 }
 
 func (*movieService) CreateMovie(movie *models.Movie) (*models.Movie, error) {
 	movie.ID = rand.Int63()
-	movieRepository.CreateMovie(&movie)
+	createdMovie, err := fireStoreRepository.CreateMovie(movie)
+
+	return createdMovie, err
 }
 
 func (*movieService) ValidateMovie(movie *models.Movie) error {
