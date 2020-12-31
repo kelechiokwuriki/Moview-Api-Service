@@ -10,8 +10,8 @@ type MovieRepository interface {
 	// UpdateMovie(id int, movie *models.Movie) (*models.Movie,)
 }
 
-type repo struct{}
+// type movieRepo struct{}
 
-func NewMovieRepository() MovieRepository {
-	return &repo{}
-}
+// func NewMovieRepository() MovieRepository {
+// 	return &movieRepo{}
+// }

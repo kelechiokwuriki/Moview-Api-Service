@@ -11,18 +11,16 @@ import (
 const projectId string = "moview-4862b"
 const firestoreCollectionName string = "movies"
 
-type FireStoreRepository interface {
-	CreateMovie(movie *models.Movie) (*models.Movie, error)
-	GetAllMovies() ([]models.Movie, error)
-}
-
 type fireStoreRepo struct{}
 
-func NewFireStoreRepository() FireStoreRepository {
+func NewFireStoreRepository() MovieRepository {
 	return &fireStoreRepo{}
 }
 
 func (*fireStoreRepo) CreateMovie(movie *models.Movie) (*models.Movie, error) {
+	//remember we added the path to the service account json file
+	//in bash profile.
+	//This code uses the path
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "moview-4862b")
 
@@ -49,6 +47,9 @@ func (*fireStoreRepo) CreateMovie(movie *models.Movie) (*models.Movie, error) {
 }
 
 func (*fireStoreRepo) GetAllMovies() ([]models.Movie, error) {
+	//remember we added the path to the service account json file
+	//in bash profile.
+	//This code uses the path
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "moview-4862b")
 
@@ -84,5 +85,3 @@ func (*fireStoreRepo) GetAllMovies() ([]models.Movie, error) {
 
 	return movies, nil
 }
-
-// func UpdateMovie
