@@ -11,19 +11,18 @@ import (
 const projectId string = "moview-4862b"
 const firestoreCollectionName string = "movies"
 
-type MovieRepository interface {
+type FireStoreRepository interface {
 	CreateMovie(movie *models.Movie) (*models.Movie, error)
 	GetAllMovies() ([]models.Movie, error)
-	// UpdateMovie(id int, movie *models.Movie) (*models.Movie,)
 }
 
-type repo struct{}
+type fireStoreRepo struct{}
 
-func NewFireStoreRepository() MovieRepository {
-	return &repo{}
+func NewFireStoreRepository() FireStoreRepository {
+	return &fireStoreRepo{}
 }
 
-func (*repo) CreateMovie(movie *models.Movie) (*models.Movie, error) {
+func (*fireStoreRepo) CreateMovie(movie *models.Movie) (*models.Movie, error) {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "moview-4862b")
 
@@ -49,7 +48,7 @@ func (*repo) CreateMovie(movie *models.Movie) (*models.Movie, error) {
 	return movie, err
 }
 
-func (*repo) GetAllMovies() ([]models.Movie, error) {
+func (*fireStoreRepo) GetAllMovies() ([]models.Movie, error) {
 	ctx := context.Background()
 	client, err := firestore.NewClient(ctx, "moview-4862b")
 
