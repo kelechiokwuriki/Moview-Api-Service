@@ -19,7 +19,7 @@ func GetAllMovies(responseWriter http.ResponseWriter, request *http.Request) {
 
 	if err != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(responseWriter).Encode(errors.ServiceError{Message: "Error retrieving all movies"})
+		json.NewEncoder(responseWriter).Encode(errors.ServiceError{Message: err.Error()})
 		return
 	}
 
@@ -40,7 +40,7 @@ func CreateMovie(responseWriter http.ResponseWriter, request *http.Request) {
 
 	if validatedError := movieService.ValidateMovie(&movie); validatedError != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(responseWriter).Encode(errors.ServiceError{Message: "Error validating movie"})
+		json.NewEncoder(responseWriter).Encode(errors.ServiceError{Message: validatedError.Error()})
 		return
 	}
 
