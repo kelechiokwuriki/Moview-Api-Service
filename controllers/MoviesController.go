@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"Moview/errors"
 	"Moview/models"
 	"Moview/services"
 	"encoding/json"
@@ -18,7 +19,7 @@ func GetAllMovies(responseWriter http.ResponseWriter, request *http.Request) {
 
 	if err != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
-		responseWriter.Write([]byte(`{"error": "Error retrieving movies"}`))
+		json.NewEncoder(responseWriter).Encode(errors.ServiceError{Message: "Error retrieving all movies"})
 		return
 	}
 
@@ -39,7 +40,7 @@ func CreateMovie(responseWriter http.ResponseWriter, request *http.Request) {
 
 	if validatedError := movieService.ValidateMovie(&movie); validatedError != nil {
 		responseWriter.WriteHeader(http.StatusInternalServerError)
-		responseWriter.Write([]byte(`{"error": "Error found when validating movie"}`))
+		json.NewEncoder(responseWriter).Encode(errors.ServiceError{Message: "Error validating movie"})
 		return
 	}
 
